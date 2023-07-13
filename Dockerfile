@@ -37,16 +37,17 @@ RUN \
   echo "**** install mastodon ****" && \
   mkdir -p /app/www && \
   if [ -z ${MASTODON_VERSION+x} ]; then \
-    MASTODON_VERSION=$(curl -sX GET "https://api.github.com/repos/mastodon/mastodon/releases/latest" \
+    MASTODON_VERSION=$(curl -sX GET "https://api.github.com/repos/alviroiskandar/mastodon/releases/latest" \
     | awk '/tag_name/{print $4;exit}' FS='[""]'); \
   fi && \
   curl -s -o \
     /tmp/mastodon.tar.gz -L \
-    "https://github.com/mastodon/mastodon/archive/refs/tags/${MASTODON_VERSION}.tar.gz" && \
+    "https://github.com/alviroiskandar/mastodon/archive/refs/tags/${MASTODON_VERSION}.tar.gz" && \
   tar xf \
     /tmp/mastodon.tar.gz -C \
     /app/www/ --strip-components=1 && \
   cd /app/www && \
+  bundle install -j"$(nproc)" && \
   bundle config set --local deployment 'true' && \
   bundle config set --local without 'development test' && \
   bundle config set silence_root_warning true && \
